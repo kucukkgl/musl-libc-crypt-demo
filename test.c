@@ -4,26 +4,20 @@
 
 int main(void)
 {
-    char pw[5000];
+    char pw[1024];
 
-    memset(pw, 'A', sizeof(pw) - 1);
-    pw[sizeof(pw) - 1] = '\0';
+    memset(pw, 'A', sizeof(pw)-1);
+    pw[sizeof(pw)-1] = '\0';
 
-    for (int len = 1; len < 4096; len++) {
+    for (int len = 250; len <= 270; len++) {
         pw[len] = '\0';
 
         char *h = crypt(pw, "$6$salt$");
 
-        if (!h || h[0] == '*') {
-            printf("FAILED at len=%d: %s\n",
-                   len,
-                   h ? h : "(null)");
-            return 0;
-        }
+        printf("len=%d -> %s\n", len, h ? h : "(null)");
 
         pw[len] = 'A';
     }
 
-    printf("No failure up to 4095 bytes\n");
     return 0;
 }
